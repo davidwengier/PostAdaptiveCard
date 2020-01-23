@@ -11,13 +11,13 @@ inputs:
     description: URI to the webhook to send the card to. If this is blank, the JSON payload will be written to stdout
     required: false
   event-name:
-    description: The name of the event, defaults to the GITHUB_EVENT_NAME environment variable
+    description: The name of the event, defaults to the GITHUB_EVENT_NAME environment variable if nothing is specified
     required: false
-    default: '$GITHUB_EVENT_NAME'
+    default: ''
   event-path:
-    description: The path to the JSON payload for the event, defaults to the GITHUB_EVENT_PATH  environment variable
+    description: The path to the JSON payload for the event, defaults to the GITHUB_EVENT_PATH environment variable if nothing is specified
     required: false
-    default: '$GITHUB_EVENT_PATH'
+    default: ''
 
 runs:
   using: docker
