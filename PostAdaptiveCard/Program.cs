@@ -15,6 +15,15 @@ namespace PostAdaptiveCard
     {
         private static void Main(string webhookUri, string eventPath, string eventName)
         {
+            if (string.IsNullOrWhiteSpace(eventPath))
+            {
+                eventPath = Environment.GetEnvironmentVariable("GITHUB_EVENT_PATH");
+            }
+            if (string.IsNullOrWhiteSpace(eventName))
+            {
+                eventName = Environment.GetEnvironmentVariable("GITHUB_EVENT_NAME");
+            }
+
             using FileStream fs = File.OpenRead(eventPath);
             var doc = JsonDocument.Parse(fs);
 
