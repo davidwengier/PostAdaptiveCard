@@ -12,16 +12,24 @@ For more information on adaptive cards see [https://adaptivecards.io/](https://a
 
 ## Example Usage ##
 
+The following YAML file will create an action that posts notification cards whenever an issue or PR is opened or reopened, to the specified webhook URI.
+
 ```yaml
-name: Post PRs to Teams
+name: Post PRs and issues to Teams
 
 on:
   pull_request:
     types: [opened, reopened]
+  issues:
+    types: [opened, reopened]
 
-steps:
-  name: Notify
-  uses: davidwengier/PostAdaptiveCard@v0.1.0
-  with:
-    webhook-uri: <Webhook URI>
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Notify
+        uses: davidwengier/PostAdaptiveCard@v1.0.0
+        with:
+          webhook-uri: <insert your webhook URI here>
 ```
