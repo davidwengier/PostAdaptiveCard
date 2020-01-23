@@ -10,12 +10,8 @@ inputs:
   webhook_uri:
     description: URI to the webhook to send the card to. If this is blank, the JSON payload will be written to stdout
     required: false
-  event-name:
-    description: The name of the event, defaults to the GITHUB_EVENT_NAME environment variable if nothing is specified
-    required: false
-    default: ''
   event-path:
-    description: The path to the JSON payload for the event, defaults to the GITHUB_EVENT_PATH environment variable if nothing is specified
+    description: The path to the JSON payload for the event, defaults to the GITHUB_EVENT_PATH environment variable if nothing is specified. This is mainly here for developer testing.
     required: false
     default: ''
 
@@ -24,5 +20,4 @@ runs:
   image: Dockerfile
   env:
     WEBHOOK_URI: ${{ inputs.webhook-uri }}
-    EVENT_NAME: ${{ inputs.event-name }}
     EVENT_PATH: ${{ inputs.event-path }}
