@@ -1,0 +1,28 @@
+name: Post Adaptive Card
+author: David Wengier
+description: Posts an Adaptive Card payload to the specified webhook in response to a GitHub action (usually issue or PR creation)
+
+branding:
+  icon: zap
+  color: blue
+
+inputs:
+  webhook_uri:
+    description: URI to the webhook to send the card to. If this is blank, the JSON payload will be written to stdout
+    required: false
+  event-name:
+    description: The name of the event, defaults to the GITHUB_EVENT_NAME environment variable
+    required: false
+    default: '$GITHUB_EVENT_NAME'
+  event-path:
+    description: The path to the JSON payload for the event, defaults to the GITHUB_EVENT_PATH  environment variable
+    required: false
+    default: '$GITHUB_EVENT_PATH'
+
+runs:
+  using: docker
+  image: Dockerfile
+  env:
+    WEBHOOK_URI: ${{ inputs.webhook-uri }}
+    EVENT_NAME: ${{ inputs.event-name }}
+    EVENT_PATH: ${{ inputs.event-path }}
