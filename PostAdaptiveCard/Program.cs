@@ -13,19 +13,17 @@ namespace PostAdaptiveCard
 {
     internal class Program
     {
-        private static void Main(string webhookUri, string eventPath, string eventName)
+        private static void Main(string webhookUri, string eventPath)
         {
             if (string.IsNullOrWhiteSpace(eventPath))
             {
                 eventPath = Environment.GetEnvironmentVariable("GITHUB_EVENT_PATH");
             }
-            if (string.IsNullOrWhiteSpace(eventName))
-            {
-                eventName = Environment.GetEnvironmentVariable("GITHUB_EVENT_NAME");
-            }
 
             using FileStream fs = File.OpenRead(eventPath);
             var doc = JsonDocument.Parse(fs);
+
+            string eventName = doc.RootElement.GetProperty("action").GetString();
 
             MessageCard card;
             if (doc.RootElement.TryGetProperty("issue", out JsonElement issue))
@@ -41,16 +39,9 @@ namespace PostAdaptiveCard
                 throw new InvalidOperationException("Can not support this type of event.");
             }
 
-            var options = new JsonSerializerOptions
-            {
-                IgnoreNullValues = true,
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                WriteIndented = true
-            };
-            options.Converters.Add(new ActionConverter());
-            string converted = JsonSerializer.Serialize(card, options);
+            string converted = card.ToJson();
 
-            Console.WriteLine(converted);
+            Console.WriteLine(JsonSerializer.Serialize(JsonDocument.Parse(converted), new JsonSerializerOptions { WriteIndented = true }));
 
             if (!string.IsNullOrWhiteSpace(webhookUri))
             {
