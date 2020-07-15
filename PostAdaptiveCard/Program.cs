@@ -43,6 +43,12 @@ namespace PostAdaptiveCard
 
             if (string.IsNullOrWhiteSpace(webhookUri))
             {
+                Console.WriteLine("Didn't get a web hook URI, looking in the WEBHOOK_URI environment variable");
+                webhookUri = Environment.GetEnvironmentVariable("WEBHOOK_URI");
+            }
+
+            if (string.IsNullOrWhiteSpace(webhookUri))
+            {
                 Console.WriteLine("Didn't get a web hook URI");
             }
             else
@@ -65,6 +71,7 @@ namespace PostAdaptiveCard
                 using var client = new HttpClient();
                 using var content = new StringContent(converted, Encoding.UTF8, "application/json");
                 using HttpResponseMessage response = client.PostAsync(webhookUri, content).Result;
+                Console.WriteLine("Response code: " + response.StatusCode);
                 response.EnsureSuccessStatusCode();
             }
 
