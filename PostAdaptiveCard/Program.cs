@@ -41,6 +41,23 @@ namespace PostAdaptiveCard
 
             string converted = card.ToJson();
 
+            if (string.IsNullOrWhiteSpace(webhookUri))
+            {
+                Console.WriteLine("Didn't get a web hook URI");
+            }
+            else
+            {
+                if (webhookUri.Length > 10)
+                {
+                    Console.WriteLine("Outputting to webhook URI: " + webhookUri.Substring(0, 10) + "..." + webhookUri.Substring(webhookUri.Length - 10));
+                }
+                else
+                {
+                    Console.WriteLine("Outputting to a really short webhook URI");
+                }
+            }
+
+            Console.WriteLine("JSON to post:");
             Console.WriteLine(JsonSerializer.Serialize(JsonDocument.Parse(converted), new JsonSerializerOptions { WriteIndented = true }));
 
             if (!string.IsNullOrWhiteSpace(webhookUri))
