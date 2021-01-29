@@ -19,5 +19,5 @@ runs:
   using: docker
   image: Dockerfile
   env:
-    WEBHOOK_URI: ${{ inputs.webhook-uri }}
+    WEBHOOK_URI: ${{ inputs.webhook_uri }}
     EVENT_PATH: ${{ inputs.event-path }}
